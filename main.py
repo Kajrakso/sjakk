@@ -2,13 +2,15 @@ from board import Board
 import UI
 
 def main():
-    game = Board()
+    board = Board()
     while True:
-        UI.display(game.board, game.pos_info, game.game_info)
-        move = UI.get_user_move()
-        if UI.user_quit(move[0], move[1]):
-            break
-        game.make_move(move[0], move[1])
+        UI.display(board.board)
+        (x_from, y_from), (x_to, y_to) = UI.get_user_move()
+        if (x_to, y_to) in board.get_legal_moves(x = x_from, y = y_from):
+            board.board[y_from][x_from].move_to(x = x_to, y = y_to)
+            board.update_pos()
+        else:
+            print("not legal move...")
 
 if __name__ == "__main__":
     main()

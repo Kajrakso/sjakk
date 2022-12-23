@@ -1,16 +1,11 @@
 from CONST import SIZE
+import sys
 
 def get_user_move() -> tuple:
     moveFrom, moveTo = input("Move piece from square: "), input("to square: ")
     if moveFrom == "q" or moveTo == "q":
-        return ("q", "q")
+        sys.exit()
     return (transform(moveFrom), (transform(moveTo)))
-
-def user_quit(*user_input: str) -> bool:
-    for string in user_input:
-        if string == "q":
-            return True
-    return False
 
 def transform(pos: str) -> tuple:
     """Transforms a chess square string to its corresponding tuple.
@@ -18,15 +13,15 @@ def transform(pos: str) -> tuple:
     """
     x = ord(list(pos.lower())[0]) - 97
     y = abs(int(list(pos)[1]) - SIZE)
-    return (y, x)
+    return (x, y)
 
-def display_new(board: list[list]):
+def display(board: list[list]):
     for i in range(len(board)):
         for j in range(len(board[i])):
             print(str(board[i][j])+' ' if board[i][j] != None else '  ', end="")
         print()
 
-def display(board: list, pos_info: dict, game_info: dict) -> None:
+def display_old(board: list, pos_info: dict, game_info: dict) -> None:
     """Prints out a board with coordinate axes.
     Also prints out information about the position."""
     SPACING = 1

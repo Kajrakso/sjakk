@@ -51,6 +51,10 @@ class Board():
     def __init__(self, pos=FEN_START):
         readFEN(self.board, self.pos_info, pos)
 
+    def get_legal_moves(self, x: int, y: int):
+        piece = self.board[y][x]
+        return piece.moves()
+
     def update_pos_info(self):
         """Updates position info"""
         if self.pos_info['move'] == colors.WHITE: self.pos_info['move'] = colors.BLACK
@@ -60,7 +64,15 @@ class Board():
             self.pos_info['fullmove'] += 1
         #! Also needs to update en passant
         #! Also need to update castle 
+    
+    def update_pos(self):
+        for i in range(len(self.board)):
+            for j in range(len(self.board[i])):
+                if self.board[i][j] != None:
+                    x_new = self.board[i][j].x
+                    y_new = self.board[i][j].y
+                    self.board[i][j], self.board[y_new][x_new] = None, self.board[i][j]
 
 if __name__ == "__main__":
     brett = Board()
-    UI.display_new(brett.board)
+    UI.display(brett.board)
