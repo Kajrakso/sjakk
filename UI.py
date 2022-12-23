@@ -1,4 +1,4 @@
-SIZE = 8
+from CONST import SIZE
 
 def get_user_move() -> tuple:
     moveFrom, moveTo = input("Move piece from square: "), input("to square: ")
@@ -19,6 +19,12 @@ def transform(pos: str) -> tuple:
     x = ord(list(pos.lower())[0]) - 97
     y = abs(int(list(pos)[1]) - SIZE)
     return (y, x)
+
+def display_new(board: list[list]):
+    for i in range(len(board)):
+        for j in range(len(board[i])):
+            print(str(board[i][j])+' ' if board[i][j] != None else '  ', end="")
+        print()
 
 def display(board: list, pos_info: dict, game_info: dict) -> None:
     """Prints out a board with coordinate axes.

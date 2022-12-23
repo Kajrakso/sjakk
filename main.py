@@ -1,8 +1,8 @@
-import chess
+from board import Board
 import UI
 
 def main():
-    game = chess.Chess()
+    game = Board()
     while True:
         UI.display(game.board, game.pos_info, game.game_info)
         move = UI.get_user_move()
