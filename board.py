@@ -1,6 +1,5 @@
 from CONST import SIZE, FEN_START, colors
 import pieces
-import UI
 
 def create_piece(x: int, y: int, char: str) -> object:
     if char == char.upper(): c = colors.WHITE
@@ -19,8 +18,8 @@ def readFEN(board: list, pos_info: dict, FEN: str) -> None:
     i = 0
     for char in FEN_board:
         if char.isalpha():
-            x, y = i % SIZE, i // SIZE
-            board[y][x] = create_piece(x, y, char) 
+            x, y = i % SIZE, SIZE - i // SIZE - 1
+            board[x][y] = create_piece(x, y, char) 
             i += 1
         else:
             try: i += int(char)
@@ -52,7 +51,7 @@ class Board():
         readFEN(self.board, self.pos_info, pos)
 
     def get_legal_moves(self, x: int, y: int):
-        piece = self.board[y][x]
+        piece = self.board[x][y]
         return piece.moves()
 
     def update_pos_info(self):
@@ -66,13 +65,12 @@ class Board():
         #! Also need to update castle 
     
     def update_pos(self):
-        for i in range(len(self.board)):
-            for j in range(len(self.board[i])):
+        for i in range(SIZE):
+            for j in range(SIZE):
                 if self.board[i][j] != None:
                     x_new = self.board[i][j].x
                     y_new = self.board[i][j].y
-                    self.board[i][j], self.board[y_new][x_new] = None, self.board[i][j]
+                    self.board[i][j], self.board[x_new][y_new] = None, self.board[i][j]
 
 if __name__ == "__main__":
-    brett = Board()
-    UI.display(brett.board)
+    pass

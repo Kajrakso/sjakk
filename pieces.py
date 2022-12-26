@@ -1,11 +1,6 @@
-from CONST import colors, pieces
+from CONST import colors, repr_piece, piece_moves
+import rules
 
-def remove_squares_not_in_board(moves: list[tuple]) -> None:
-    moves = list(filter(
-        lambda move: 
-            (move[0] in range(0,8)) and (move[1] in range(0,8))
-        , moves))
-        
 class Piece:
     symbol: tuple
 
@@ -22,47 +17,54 @@ class Piece:
         """Moves pieces"""
         self.x = x
         self.y = y
-class Pawn(Piece):
-    symbol: tuple = pieces.PAWN.value
-    start_square: bool = False
 
-    def __post_init__(self):
-        if ((self.y == 1 and self.color == colors.BLACK) 
+
+class Bishop(Piece):
+    symbol: tuple = repr_piece.BISHOP.value
+    # sliding piece
+    direction: set = piece_moves.BISHOP
+    applied_rules = rules.get_sliding_moves
+
+class Rook(Piece):
+    symbol: tuple = repr_piece.ROOK.value
+    # sliding piece
+    direction: set = piece_moves.ROOK
+    applied_rules = rules.get_sliding_moves
+
+class Queen(Piece):
+    symbol: tuple = repr_piece.QUEEN.value
+    # sliding piece
+    direction: set = piece_moves.QUEEN
+    applied_rules = rules.get_sliding_moves
+
+class King(Piece):
+    symbol: tuple = repr_piece.KING.value
+    # knight/king piece
+    direction: set = piece_moves.KING
+    applied_rules = rules.get_knight_king_moves
+
+class Knight(Piece):
+    symbol: tuple = repr_piece.KNIGHT.value
+    # knight/king piece
+    direction: set = piece_moves.KNIGHT
+    applied_rules = rules.get_knight_king_moves
+
+class Pawn(Piece):
+    symbol: tuple = repr_piece.PAWN.value
+    start_square: bool = False
+    # direction: set = piece_moves.PAWN
+    # direction = rules.PAWN if (self.color == colors.BLACK) else rules.PAWN.inverse
+    # pawn piece
+    applied_rules = rules.get_pawn_moves
+
+    def __init__(self, x: int, y: int, color: colors):
+        super().__init__(x, y, color)
+        if ((y == 6 and color == colors.BLACK) 
             or 
-            (self.y == 6 and self.color == colors.WHITE)): 
+            (y == 1 and color == colors.WHITE)): 
                 self.start_square = True
         else: 
             self.start_square = False
-    
-    def moves(self) -> list[tuple]:
-        scope = []
-        if self.color == colors.WHITE:
-            scope = [(self.x    , self.y - 1), 
-                     (self.x - 1, self.y - 1),
-                     (self.x + 1, self.y - 1)]
-            if self.start_square:
-                scope.append((self.x, self.y - 2))
-        elif self.color == colors.BLACK:
-            scope = [(self.x    , self.y + 1), 
-                     (self.x - 1, self.y + 1),
-                     (self.x + 1, self.y + 1)]
-            if self.start_square:
-                scope.append((self.x, self.y + 2))
-        
-        remove_squares_not_in_board(scope)
-        return scope
-class Bishop(Piece):
-    symbol: tuple = pieces.BISHOP.value
-class Knight(Piece):
-    symbol: tuple = pieces.KNIGHT.value
-class Rook(Piece):
-    symbol: tuple = pieces.ROOK.value
-class Queen(Piece):
-    symbol: tuple = pieces.QUEEN.value
-class King(Piece):
-    symbol: tuple = pieces.KING.value
-
 
 if __name__ == "__main__":
-    bonde = Pawn(x=1,y=2,color=colors.WHITE)
-    print(str(bonde))
+    pass

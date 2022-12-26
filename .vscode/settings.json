@@ -1,4 +1,8 @@
 {
     "python.analysis.typeCheckingMode": "basic",
-    "python.linting.enabled": false
+    "python.linting.enabled": false,
+    "workbench.colorCustomizations": {
+        "titleBar.activeBackground": "#6537058f",
+        "titleBar.border": "#000000"
+    }
 }

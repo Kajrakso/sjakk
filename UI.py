@@ -12,15 +12,19 @@ def transform(pos: str) -> tuple:
     For example: From "e4" to (4, 4).
     """
     x = ord(list(pos.lower())[0]) - 97
-    y = abs(int(list(pos)[1]) - SIZE)
+    y = int(list(pos)[1]) - 1
     return (x, y)
 
 def display(board: list[list]):
-    for i in range(len(board)):
-        for j in range(len(board[i])):
-            print(str(board[i][j])+' ' if board[i][j] != None else '  ', end="")
+    for i in range(SIZE):
+        for j in range(SIZE):
+            x = j
+            y = SIZE - 1 - i
+            print(str(board[x][y])+' ' if board[x][y] != None else '  ', end="")
         print()
 
+
+# not using 
 def display_old(board: list, pos_info: dict, game_info: dict) -> None:
     """Prints out a board with coordinate axes.
     Also prints out information about the position."""

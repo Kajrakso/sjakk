@@ -8,7 +8,7 @@ class colors(Enum):
     BLACK = 1
     # NONE = -1
 
-class pieces(Enum):
+class repr_piece(Enum):
     PAWN = ("P", "p")
     ROOK = ("R", "r")
     KNIGHT = ("N", "n")
@@ -17,6 +17,22 @@ class pieces(Enum):
     KING = ("K", "k")
     NONE = (None, None)
 
+class move_dir:
+    SLIDING = set([(-1, 0), (1, 0), (0, -1), (0, 1)])
+    DIAG  = set([(1,1), (-1,1), (-1,-1), (1,-1)])
+    ALL = SLIDING.union(DIAG)
+
+class piece_moves:
+    ROOK = move_dir.SLIDING
+    BISHOP = move_dir.DIAG
+    QUEEN = move_dir.ALL
+    KING = move_dir.ALL
+    # SPESIELLE TING
+    KNIGHT = {(-2, 1), (-1, 2), (1, 2), (2, 1), (2, -1), (1, -2), (-1, -2), (-2, -1)}
+    PAWN = None
+
+def main():
+    pass
+
 if __name__ == "__main__":
-    print(pieces.PAWN.value[colors.WHITE.value])
-    print(pieces.PAWN.value[colors.BLACK.value])
+    main()
