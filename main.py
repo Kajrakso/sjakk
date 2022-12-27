@@ -2,25 +2,51 @@ from board import Board
 import rules
 import UI
 
-def main():
-    board = Board()
-    while True:
-        UI.display(board.board)
-        (x_from, y_from), (x_to, y_to) = UI.get_user_move()
-        board.board[x_from][y_from].move_to(x = x_to, y = y_to)
-        board.update_pos()
-        
-        UI.display(board.board)
-        (x, y) = UI.transform(input("sjekk gyldige trekk for: "))
-        print(repr(x), repr(y))
-        print(board.board[x][y].applied_rules(board.board))
-        
-        # if (x_to, y_to) in board.get_legal_moves(x = x_from, y = y_from):
-        #     board.board[y_from][x_from].move_to(x = x_to, y = y_to)
-        #     board.update_pos()
+class MovingWrongPiece(Exception):
+    pass
 
-        # else:
-        #     print("not legal move...")
+class IllegalMove(Exception):
+    pass
+
+def move(board, x_from, y_from, x_to, y_to):
+    #! Må gjøre noe med denne oppdateringsgreia.
+    if board.board[x_from][y_from].move_to(x = x_to, y = y_to):
+        board.update_pos()
+
+def main():
+    chess_game = Board()
+    while True:
+        UI.display(chess_game)
+        try:
+            (x_from, y_from), (x_to, y_to) = UI.get_user_move()
+            moving_piece = chess_game.board[x_from][y_from]
+            possible_moves = moving_piece.applied_rules(chess_game.board)[0]
+            possible_captures = moving_piece.applied_rules(chess_game.board)[1]
+
+            if not (chess_game.pos_info['move'] == moving_piece.color):
+                raise MovingWrongPiece
+
+            if (((x_to, y_to) in possible_moves)
+                or 
+                ((x_to, y_to) in possible_captures)):
+                move(chess_game, x_from, y_from, x_to, y_to)
+            else:
+                raise IllegalMove
+        
+        except ValueError:
+            UI.error_msg(f"\nHar du skrevet noe feil?\n{ValueError}\n")
+
+        except IndexError:
+            UI.error_msg(f"\nPrøver du å flytte ut av brettet?\n{IndexError}\n")
+
+        except AttributeError:
+            UI.error_msg(f"\nPrøver du å flytte på et tomt felt?\n{AttributeError}\n")
+
+        except MovingWrongPiece:
+            UI.error_msg(f"\nPrøver du å flytte motstanderens brikke?\n{MovingWrongPiece}\n")
+
+        except IllegalMove:
+            UI.error_msg(f"\nHar du lov til å flytte dit?\n{IllegalMove}\n")
 
 if __name__ == "__main__":
     main()

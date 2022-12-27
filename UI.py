@@ -1,9 +1,12 @@
-from CONST import SIZE
+from CONST import SIZE, colors
+import os
 import sys
+import time
 
 def get_user_move() -> tuple:
     moveFrom, moveTo = input("Move piece from square: "), input("to square: ")
     if moveFrom == "q" or moveTo == "q":
+        os.system('cls' if os.name=='nt' else 'clear')
         sys.exit()
     return (transform(moveFrom), (transform(moveTo)))
 
@@ -15,14 +18,25 @@ def transform(pos: str) -> tuple:
     y = int(list(pos)[1]) - 1
     return (x, y)
 
-def display(board: list[list]):
+def display(board):
+    os.system('cls' if os.name=='nt' else 'clear')
+    print(f"---------------")
     for i in range(SIZE):
         for j in range(SIZE):
             x = j
             y = SIZE - 1 - i
-            print(str(board[x][y])+' ' if board[x][y] != None else '  ', end="")
+            print(str(board.board[x][y])+' ' if board.board[x][y] != None else '  ', end="")
         print()
 
+    print(f"---------------")
+    print(f"{'to move':<8}{'|'}{'move#':>6}")
+    print(f"---------------")
+    print(f"{'white' if board.pos_info['move'] == colors.WHITE else 'black'}{'   |'}{board.pos_info['fullmove']:>6}\n")
+
+def error_msg(s: str):
+    os.system('cls' if os.name=='nt' else 'clear')
+    print(s)
+    time.sleep(3)
 
 # not using 
 def display_old(board: list, pos_info: dict, game_info: dict) -> None:

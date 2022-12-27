@@ -26,13 +26,12 @@ class piece_moves:
     ROOK = move_dir.SLIDING
     BISHOP = move_dir.DIAG
     QUEEN = move_dir.ALL
+    
+    # SPECIAL MOVES
     KING = move_dir.ALL
-    # SPESIELLE TING
     KNIGHT = {(-2, 1), (-1, 2), (1, 2), (2, 1), (2, -1), (1, -2), (-1, -2), (-2, -1)}
-    PAWN = None
-
-def main():
-    pass
+    PAWN = {'moves': {(0,1)}, 
+            'captures': {(-1, 1), (1, 1)}}
 
 if __name__ == "__main__":
-    main()
+    pass

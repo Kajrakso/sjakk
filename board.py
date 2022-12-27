@@ -35,6 +35,8 @@ def readFEN(board: list, pos_info: dict, FEN: str) -> None:
 
 class Board():
     board: list[list] = [[None for _ in range(SIZE)] for _ in range(SIZE)] 
+    white_king_pos: tuple
+    black_king_pos: tuple
     pos_info: dict = {
         "move": colors.WHITE,
         "castle": "",
@@ -49,10 +51,17 @@ class Board():
 
     def __init__(self, pos=FEN_START):
         readFEN(self.board, self.pos_info, pos)
+        all_pos = [(i, j) for i in range(SIZE) for j in range(SIZE)]
+        for (x, y) in all_pos:
+            if self.board[x][y].__class__ == pieces.King:
+                match self.board[x][y].color:
+                    case colors.WHITE:
+                        self.white_king_pos = (x, y)
+                    case colors.BLACK:
+                        self.black_king_pos = (x, y)
 
     def get_legal_moves(self, x: int, y: int):
-        piece = self.board[x][y]
-        return piece.moves()
+        return self.board[x][y].moves()
 
     def update_pos_info(self):
         """Updates position info"""
@@ -65,12 +74,20 @@ class Board():
         #! Also need to update castle 
     
     def update_pos(self):
-        for i in range(SIZE):
-            for j in range(SIZE):
-                if self.board[i][j] != None:
-                    x_new = self.board[i][j].x
-                    y_new = self.board[i][j].y
-                    self.board[i][j], self.board[x_new][y_new] = None, self.board[i][j]
+        self.update_pos_info()
+        # Loops through all pieces and updates its position on the board. 
+        all_pos = [(i, j) for i in range(SIZE) for j in range(SIZE)]
+        for (x, y) in all_pos:
+            if self.board[x][y] != None:
+                x_new = self.board[x][y].x
+                y_new = self.board[x][y].y
+                self.board[x][y], self.board[x_new][y_new] = None, self.board[x][y]
+                if self.board[x_new][y_new].__class__ == pieces.King:
+                    match self.board[x_new][y_new].color:
+                        case colors.WHITE:
+                            self.white_king_pos = (x_new, y_new)
+                        case colors.BLACK:
+                            self.black_king_pos = (x_new, y_new)
 
 if __name__ == "__main__":
     pass
