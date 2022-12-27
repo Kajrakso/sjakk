@@ -1,10 +1,12 @@
 import board
 import UI
 import main
+import CONST
 
-andre = [(i, 1) for i in range(8)]
-syvende = [(i, 6) for i in range(8)]
+all_pos = [[(i, j) for i in range(CONST.SIZE)] for j in range(CONST.SIZE)]
 
+def gyldig():
+    pass
 
 def test1():
     testbrett = main.Board()
@@ -17,5 +19,4 @@ def test1():
         
 
 if __name__ == "__main__":
-    # print(andre+syvende)
-    test1()
+    print(all_pos)

@@ -5,9 +5,11 @@ import time
 
 def get_user_move() -> tuple:
     moveFrom, moveTo = input("Move piece from square: "), input("to square: ")
-    if moveFrom == "q" or moveTo == "q":
-        os.system('cls' if os.name=='nt' else 'clear')
-        sys.exit()
+    if moveFrom[0] ==":" or moveTo[0] == ":":
+        # Command mode
+        if moveFrom[1] == "q" or moveTo[1] == "q":
+            os.system('cls' if os.name=='nt' else 'clear')
+            sys.exit()
     return (transform(moveFrom), (transform(moveTo)))
 
 def transform(pos: str) -> tuple:
