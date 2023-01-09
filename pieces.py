@@ -13,11 +13,12 @@ class Piece:
         """returns the symbol found in CONST.pieces"""
         return self.symbol[self.color.value]
 
-    def move_to(self, x: int, y: int) -> bool:
-        """Moves pieces"""
-        self.x = x
-        self.y = y
-        return True
+    # def move_to(self, x: int, y: int) -> bool:
+    #     """Moves pieces"""
+    #     self.x = x
+    #     self.y = y
+    #     return True
+
 class Bishop(Piece):
     symbol: tuple = repr_piece.BISHOP.value
     # sliding piece
@@ -38,6 +39,19 @@ class King(Piece):
     # knight/king piece
     direction: set = piece_moves.KING
     applied_rules = rules.get_knight_king_moves
+    # if king in check: 
+    # pretend the king is every piece type and see if is can capture the piece of opposite color. 
+    # if this is possible the king is in check.
+    # This restricts the possible moves and captures such that the king no longer is in check.
+    # If the list of possible moves/captures is empty and the king is in check: checkmate -> game over...
+    check_directions: list =   [piece_moves.KING,
+                                piece_moves.KNIGHT,
+                                piece_moves.BISHOP, 
+                                piece_moves.ROOK,
+                                piece_moves.QUEEN,
+                                piece_moves.PAWN]
+    # in_check = rules.king_in_check
+
 class Knight(Piece):
     symbol: tuple = repr_piece.KNIGHT.value
     # knight/king piece

@@ -1,6 +1,11 @@
 from CONST import colors
+import pieces
 
-def get_knight_king_moves(self, board: list):
+def get_knight_king_moves(self, board: list) -> tuple:
+    #! CASTLING missing. New function maybe?
+    """Checks every move specified in CONST.py for knight and king.
+    Returns a tuple of lists containing possible moves and captures.
+    """
     moves: list[tuple] = []
     captures: list[tuple] = []
     for (i, j) in self.direction:
@@ -9,10 +14,13 @@ def get_knight_king_moves(self, board: list):
                 moves.append((self.x+i, self.y+j))
                 continue
             if (board[self.x+i][self.y+j].color != self.color):
-                captures.append((self.x+i, self.y+j))    
+                captures.append((self.x+i, self.y+j))
     return moves, captures        
 
 def get_sliding_moves(self, board: list):
+    """Cheks for sliding moves. Diagonal or/and vertical/horizontal.
+    Returns a tuple of lists containing possible moves and captures.
+    """
     moves: list[tuple] = []
     captures: list[tuple] = []
     for (dir_x, dir_y) in self.direction:    
@@ -33,6 +41,10 @@ def get_sliding_moves(self, board: list):
     return moves, captures
 
 def get_pawn_moves(self, board: list):
+    #! En passant missing
+    """Checks the moves for pawn. Not implemented en passant yet.
+    Returns a tuple of lists containing possible moves and captures.
+    """
     moves: list[tuple] = []
     captures: list[tuple] = []
     direction = 1 if (self.color == colors.WHITE) else -1
@@ -65,8 +77,8 @@ def get_pawn_moves(self, board: list):
 def inside_board(x_index: int, y_index: int):
     return True if ((x_index in range(0,8)) and (y_index in range(0,8))) else False
 
-def in_check(board, color: colors):
-    king_pos: tuple = (board.white_king_pos if color == colors.WHITE else board.black_king_pos)
-    piece = board.board[king_pos[0]][king_pos[1]]
-    # late som om kongen er enhver brikke.
-    pass
+# def king_in_check(self, board: list) -> bool:
+#     # king_pos: tuple = (board.white_king_pos if color == colors.WHITE else board.black_king_pos)
+#     # piece = board.board[king_pos[0]][king_pos[1]]
+#     # late som om kongen er enhver brikke.
+#     return 

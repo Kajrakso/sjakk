@@ -1,4 +1,5 @@
 from enum import Enum
+from dataclasses import dataclass
 
 SIZE = 8
 FEN_START: str = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 0"
@@ -17,11 +18,13 @@ class repr_piece(Enum):
     KING = ("K", "k")
     NONE = (None, None)
 
+@dataclass
 class move_dir:
     SLIDING = set([(-1, 0), (1, 0), (0, -1), (0, 1)])
     DIAG  = set([(1,1), (-1,1), (-1,-1), (1,-1)])
     ALL = SLIDING.union(DIAG)
 
+@dataclass
 class piece_moves:
     ROOK = move_dir.SLIDING
     BISHOP = move_dir.DIAG
@@ -34,4 +37,4 @@ class piece_moves:
             'captures': {(-1, 1), (1, 1)}}
 
 if __name__ == "__main__":
-    pass
+    print()

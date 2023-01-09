@@ -73,6 +73,16 @@ class Board():
         #! Also needs to update en passant
         #! Also need to update castle 
     
+    def move_piece(self, x: int, y: int, x_new: int, y_new: int):
+        """Moves piece object."""
+        self.board[x][y], self.board[x_new][y_new] = None, self.board[x][y]
+        if self.board[x_new][y_new].__class__ == pieces.King:
+            match self.board[x_new][y_new].color:
+                case colors.WHITE:
+                    self.white_king_pos = (x_new, y_new)
+                case colors.BLACK:
+                    self.black_king_pos = (x_new, y_new)
+
     def update_pos(self):
         self.update_pos_info()
         # Loops through all pieces and updates its position on the board. 
