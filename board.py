@@ -1,30 +1,33 @@
 from CONST import SIZE, FEN_START, colors
 import pieces
 
-def create_piece(x: int, y: int, char: str) -> object:
+def create_piece(char: str) -> object:
     if char == char.upper(): c = colors.WHITE
     else: c = colors.BLACK
     match char.lower():
-        case 'p': return pieces.Pawn(x, y, color=c)
-        case 'k': return pieces.King(x, y, color=c)
-        case 'q': return pieces.Queen(x, y, color=c)
-        case 'r': return pieces.Rook(x, y, color=c)
-        case 'n': return pieces.Knight(x, y, color=c)
-        case 'b': return pieces.Bishop(x, y, color=c)
+        case 'p': return pieces.Pawn(color=c)
+        case 'k': return pieces.King(color=c)
+        case 'q': return pieces.Queen(color=c)
+        case 'r': return pieces.Rook(color=c)
+        case 'n': return pieces.Knight(color=c)
+        case 'b': return pieces.Bishop(color=c)
     
 def readFEN(board: list, pos_info: dict, FEN: str) -> None:
     """Reads FEN and updates the chess dictionary keys board and pos_info"""        
     FEN_board, FEN_info = FEN.split(' ', 1)[0], FEN.split(' ')[1:] 
+    
+    # Creates Piece objects on the board 
     i = 0
     for char in FEN_board:
         if char.isalpha():
             x, y = i % SIZE, SIZE - i // SIZE - 1
-            board[x][y] = create_piece(x, y, char) 
+            board[x][y] = create_piece(char) 
             i += 1
         else:
             try: i += int(char)
             except: pass
 
+    # Info about the position
     for j, info in enumerate(FEN_info):
         match j:
             case 0: pos_info["move"] = (colors.BLACK if info == 'b' else colors.WHITE)
@@ -59,9 +62,6 @@ class Board():
                         self.white_king_pos = (x, y)
                     case colors.BLACK:
                         self.black_king_pos = (x, y)
-
-    def get_legal_moves(self, x: int, y: int):
-        return self.board[x][y].moves()
 
     def update_pos_info(self):
         """Updates position info"""
